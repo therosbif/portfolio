@@ -8,6 +8,8 @@
   export let items: Item[];
   export let defaultImage: Photo;
 
+  console.log("items", items);
+
   let active = 0;
   let hover = false;
 </script>

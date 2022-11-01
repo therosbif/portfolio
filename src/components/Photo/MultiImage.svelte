@@ -4,7 +4,9 @@
   export let src: string | string[];
   export let alt: string;
   export let position: "top" | "active" | "bottom" = "active";
-  export let delay: number = 5000;
+  export let delay: number = 4000;
+
+  console.log(src);
 
   let photos: [string, string] = Array.isArray(src)
     ? [src[0], src[0]]
@@ -21,7 +23,7 @@
       photos[1 - activePhoto] = getRandomImage(src);
       setTimeout(() => {
         activePhoto = 1 - activePhoto;
-      }, 400);
+      }, delay * 0.8);
     }
   }, delay);
 </script>

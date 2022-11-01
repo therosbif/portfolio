@@ -1,13 +1,42 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { supabase } from "@/supabaseClient";
+  import type { AuthSession } from "@supabase/supabase-js";
   import Menu from "@/components/Menu/Menu.svelte";
+  import type { Item } from "./components/Menu/types";
 
-  let nbPhotos = 57;
-  let photos = [];
-  for (let i = 0; i < nbPhotos; i++) {
-    photos.push(`/assets/photos/${i}.jpg`);
-  }
+  let session: AuthSession;
 
-  const items = [
+  let photos: string[] = [];
+  let errorMsg: string | null = null;
+
+  onMount(async () => {
+    supabase.auth.getSession().then(({ data }) => {
+      session = data.session;
+    });
+
+    supabase.auth.onAuthStateChange((_event, _session) => {
+      session = _session;
+    });
+    getPhotos();
+  });
+
+  const getPhotos = async () => {
+    const { data, error } = await supabase.storage.from("photos").list("full");
+    if (error) {
+      errorMsg = error.message;
+      console.error(errorMsg);
+      return;
+    }
+    photos = data.map((file) => {
+      const { data } = supabase.storage
+        .from("photos")
+        .getPublicUrl(`full/${file.name}`);
+      return data.publicUrl;
+    });
+  };
+
+  $: items = [
     {
       label: ".dev",
       href: "/def",
@@ -37,7 +66,7 @@
 </svelte:head>
 
 <main class="p-0 m-0 bg-zinc-900 overscroll-none overflow-none">
-  <Menu {items} {defaultImage} />
+  <Menu bind:items {defaultImage} />
 </main>
 
 <style>
