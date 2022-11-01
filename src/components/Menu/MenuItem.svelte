@@ -6,7 +6,7 @@
 
 <div
   use:styles={{ delay: `${order * 700}ms` }}
-  class="typewriter-text cursor-pointer p-2 text-yellow-200 text-7xl group-hover:opacity-30 hover:!opacity-100"
+  class="typewriter-text cursor-pointer p-2 duration-[2s] text-teal-200 dark:text-yellow-200 text-7xl group-hover:opacity-30 hover:!opacity-100 transition-colors"
   on:mouseenter
 >
   <slot />

@@ -4,11 +4,10 @@
   import MenuItem from "./MenuItem.svelte";
   import type { Item } from "./types";
   import type { Photo } from "../Photo/types";
+  import { theme } from "@/store";
 
   export let items: Item[];
   export let defaultImage: Photo;
-
-  console.log("items", items);
 
   let active = 0;
   let hover = false;
@@ -25,13 +24,19 @@
   >
     <h1
       use:styles={{ delay: "0s" }}
-      class="p-1 m-1 mb-20 text-4xl text-yellow-100 typewriter-text lg:text-8xl"
+      class="p-1 m-1 mb-20 text-4xl duration-[2s] dark:text-yellow-100 text-emerald-300 typewriter-text lg:text-8xl transition-colors"
     >
       jack <br /> goodall
     </h1>
     <nav class="group" on:mouseleave={() => (active = 0)}>
       {#each items as item, i}
-        <MenuItem order={i + 1} on:mouseenter={() => (active = i + 1)}>
+        <MenuItem
+          order={i + 1}
+          on:mouseenter={() => {
+            active = i + 1;
+            theme.set(i % 2 === 0 ? "dark" : "light");
+          }}
+        >
           {item.label}
         </MenuItem>
       {/each}
@@ -45,17 +50,17 @@
   </div>
   <div
     id="menu-background-image"
-    class="absolute top-0 left-0 z-10 w-screen h-screen peer-hover:"
-    use:styles={{ size: hover ? "11vmin 11vmin" : "12vmin 12vmin" }}
+    class="absolute top-0 left-0 z-10 w-screen h-screen transition-colors duration-1000"
+    use:styles={{
+      size: hover ? "11vmin 11vmin" : "12vmin 12vmin",
+      bgColor: $theme === "dark" ? "#3f3f46" : "#52525b",
+    }}
   />
 </div>
 
 <style>
   #menu-background-image {
-    background-image: radial-gradient(
-      rgba(255, 255, 255, 0.1) 9%,
-      transparent 9%
-    );
+    background-image: radial-gradient(var(--bgColor) 9%, transparent 9%);
     background-size: var(--size);
     transition: opacity 800ms ease, background-size 800ms ease,
       background-position 800ms ease;

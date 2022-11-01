@@ -6,8 +6,6 @@
   export let position: "top" | "active" | "bottom" = "active";
   export let delay: number = 4000;
 
-  console.log(src);
-
   let photos: [string, string] = Array.isArray(src)
     ? [src[0], src[0]]
     : [src, ""];

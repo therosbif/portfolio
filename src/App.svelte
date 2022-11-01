@@ -4,6 +4,7 @@
   import type { AuthSession } from "@supabase/supabase-js";
   import Menu from "@/components/Menu/Menu.svelte";
   import type { Item } from "./components/Menu/types";
+  import { theme } from "./store";
 
   let session: AuthSession;
 
@@ -55,6 +56,12 @@
     },
   ];
 
+  theme.subscribe((value) => {
+    value === "dark"
+      ? document.body.classList.add("dark")
+      : document.body.classList.remove("dark");
+  });
+
   const defaultImage = {
     src: "/assets/pfp.jpeg",
     alt: "Jack Goodall",
@@ -65,7 +72,9 @@
   <title>jack goodall</title>
 </svelte:head>
 
-<main class="p-0 m-0 bg-zinc-900 overscroll-none overflow-none">
+<main
+  class="p-0 m-0 dark:bg-zinc-800 bg-zinc-700 transition-colors overscroll-none overflow-none"
+>
   <Menu bind:items {defaultImage} />
 </main>
 

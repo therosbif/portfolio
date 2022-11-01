@@ -4,7 +4,6 @@
 
   export let active: number = 0;
   export let images: Photo[];
-  console.log(images);
 </script>
 
 <div class="relative w-full h-screen">
